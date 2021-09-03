@@ -1,5 +1,7 @@
 package ru.maslov.t1.task1.entities;
 
+import java.math.BigDecimal;
+
 /**
  * Сотрудник
  */
@@ -8,10 +10,12 @@ public class Employee {
      * Имя сотрднка
      */
     private String name;
+
     /**
-     * ЗП сотрудника
+     * ЗП сотрудника (предполагается, что зп в рублях)
      */
-    private Integer salary; //todo: change to something else
+    private BigDecimal salary;
+
     /**
      * Департамент, в котором работает струдник
      */
@@ -20,7 +24,7 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(String name, Integer salary, Department department) {
+    public Employee(String name, BigDecimal salary, Department department) {
         this.name = name;
         this.salary = salary;
         this.department = department;
@@ -34,14 +38,6 @@ public class Employee {
         this.name = name;
     }
 
-    public Integer getSalary() {
-        return salary;
-    }
-
-    public void setSalary(Integer salary) {
-        this.salary = salary;
-    }
-
     public Department getDepartment() {
         return department;
     }
@@ -50,12 +46,20 @@ public class Employee {
         this.department = department;
     }
 
+    public BigDecimal getSalary() {
+        return salary;
+    }
+
+    public void setSalary(BigDecimal salary) {
+        this.salary = salary;
+    }
+
     @Override
     public String toString() {
         return "Employee{" +
                 "name='" + name + '\'' +
                 ", salary=" + salary +
-                ", department=" + department +
+                ", department=" + department.getName() +
                 '}';
     }
 }
