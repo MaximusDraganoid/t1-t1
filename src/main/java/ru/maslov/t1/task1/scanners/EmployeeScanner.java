@@ -15,5 +15,5 @@ public interface EmployeeScanner {
      * @param departments - список департаментов
      * @return список сотрудников
      */
-    List<Employee> findEmployees(List<Department> departments);
+    List<Employee> scanEmployees(List<Department> departments);
 }

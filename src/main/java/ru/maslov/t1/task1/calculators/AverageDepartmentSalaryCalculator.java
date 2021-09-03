@@ -18,7 +18,7 @@ public class AverageDepartmentSalaryCalculator {
         for (Employee employee : employees) {
             averageSalary = averageSalary.add(employee.getSalary());
         }
-        averageSalary = averageSalary.setScale(2, 2);
+        averageSalary = averageSalary.setScale(2);
         return averageSalary.divide(new BigDecimal(employees.size()), 2);
     }
 }

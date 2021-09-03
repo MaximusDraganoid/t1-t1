@@ -18,17 +18,17 @@ public class EmployeeScannerFromTxtFileImpl
     /**
      * Объект - считыватель из файла
      */
-    private File txtFile;
+    private String txtFilePath;
 
-    public EmployeeScannerFromTxtFileImpl(File inputFile) {
-        this.txtFile = inputFile;
+    public EmployeeScannerFromTxtFileImpl(String txtFilePath) {
+        this.txtFilePath = txtFilePath;
     }
 
     @Override
-    public List<Employee> findEmployees(List<Department> departments) {
+    public List<Employee> scanEmployees(List<Department> departments) {
         List<Employee> employees = new LinkedList<>();
         try(BufferedReader br =
-                    new BufferedReader(new FileReader("C:\\Users\\mmaslov\\IdeaProjects\\t1-t1\\src\\main\\resources\\test.txt"))) {
+                    new BufferedReader(new FileReader(txtFilePath))) {
             String employeeInfo;
             while ((employeeInfo = br.readLine()) != null) {
                 employees.add(parseEmployee(employeeInfo, departments));

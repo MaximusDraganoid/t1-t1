@@ -3,12 +3,12 @@ package ru.maslov.t1.task1.runners;
 import ru.maslov.t1.task1.calculators.AverageDepartmentSalaryCalculator;
 import ru.maslov.t1.task1.entities.Department;
 import ru.maslov.t1.task1.entities.Employee;
+import ru.maslov.t1.task1.printer.EmployeePrinter;
+import ru.maslov.t1.task1.printer.impl.EmployeePrinterTxtFilesImpl;
 import ru.maslov.t1.task1.scanners.EmployeeScanner;
 import ru.maslov.t1.task1.scanners.impl.EmployeeScannerFromTxtFileImpl;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -33,13 +33,18 @@ public class Runner {
          * - приходится переавать список департаментов (не знаю как решаить эту пробелму иначе)
          * получается, что функция выполняет несколько задач (как мне кажется), а именно
          * она считывает данные из файла, создает список работницков и заполняет список департаментов
+         * - разобраться с вопросом считывания из файла и почему приходится передавать абсолютный путь и
+         * почему не работает просто передача названия файла? В конце концов, файл то находится в папке с
+         * ресурсами и по идее должен быть виден
+         * - улучшить обработку ошибок - сделать ее более осмысленной
          */
 
-        EmployeeScanner scanner = new EmployeeScannerFromTxtFileImpl(
-                new File("test.txt"));
+        EmployeeScanner scanner =
+                new EmployeeScannerFromTxtFileImpl("C:\\Users\\mmaslov\\IdeaProjects" +
+                        "\\t1-t1\\src\\main\\resources\\test.txt");
 
         List<Department> departments = new LinkedList<>();
-        List<Employee> employees = scanner.findEmployees(departments);
+        List<Employee> employees = scanner.scanEmployees(departments);
 
         System.out.println("Employees");
         System.out.println(employees);
@@ -51,5 +56,10 @@ public class Runner {
                     System.out.println("For department " + department.getName()
                     + " average salary is " + AverageDepartmentSalaryCalculator.calculate(department));
                 });
+
+        EmployeePrinter printer = new EmployeePrinterTxtFilesImpl("C:\\Users\\mmaslov\\IdeaProjects" +
+                "\\t1-t1\\src\\main\\resources\\res_test.txt");
+        printer.printEmployees(employees);
+
     }
 }
