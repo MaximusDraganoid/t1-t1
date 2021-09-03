@@ -1,14 +1,17 @@
 package ru.maslov.t1.task1.runners;
 
 import ru.maslov.t1.task1.calculators.AverageDepartmentSalaryCalculator;
+import ru.maslov.t1.task1.calculators.TransferBetweenDepartmentCalculator;
 import ru.maslov.t1.task1.entities.Department;
 import ru.maslov.t1.task1.entities.Employee;
-import ru.maslov.t1.task1.printer.EmployeePrinter;
-import ru.maslov.t1.task1.printer.impl.EmployeePrinterTxtFilesImpl;
+import ru.maslov.t1.task1.entities.Transfer;
+import ru.maslov.t1.task1.printers.TransferPrinter;
+import ru.maslov.t1.task1.printers.impl.TransferPrinterTxtFilesImpl;
 import ru.maslov.t1.task1.scanners.EmployeeScanner;
 import ru.maslov.t1.task1.scanners.impl.EmployeeScannerFromTxtFileImpl;
 
 import java.io.FileNotFoundException;
+import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -57,9 +60,12 @@ public class Runner {
                     + " average salary is " + AverageDepartmentSalaryCalculator.calculate(department));
                 });
 
-        EmployeePrinter printer = new EmployeePrinterTxtFilesImpl("C:\\Users\\mmaslov\\IdeaProjects" +
+        TransferPrinter printer = new TransferPrinterTxtFilesImpl("C:\\Users\\mmaslov\\IdeaProjects" +
                 "\\t1-t1\\src\\main\\resources\\res_test.txt");
-        printer.printEmployees(employees);
+        List<Transfer> transfers =
+                TransferBetweenDepartmentCalculator.calculate(departments.get(0), departments.get(1));
+        printer.printTransfers(transfers);
+
 
     }
 }
