@@ -26,19 +26,11 @@ public class Runner {
          */
         /**
          * Что мне не нравится самому:
-         * - приходится переавать список департаментов (не знаю как решаить эту пробелму иначе)
-         * получается, что функция выполняет несколько задач (как мне кажется), а именно
-         * она считывает данные из файла, создает список работницков и заполняет список департаментов
-         * - разобраться с вопросом считывания из файла и почему приходится передавать абсолютный путь и
-         * почему не работает просто передача названия файла? В конце концов, файл то находится в папке с
-         * ресурсами и по идее должен быть виден
          * - улучшить обработку ошибок - сделать ее более осмысленной
-         * - прошелестить моменты, где нехватает комментариев и подправлять их
          */
 
         EmployeeScanner scanner =
-                new EmployeeScannerFromTxtFileImpl("C:\\Users\\mmaslov\\IdeaProjects" +
-                        "\\t1-t1\\src\\main\\resources\\test.txt");
+                new EmployeeScannerFromTxtFileImpl("src\\main\\resources\\test.txt");
 
         List<Department> departments = new LinkedList<>();
         List<Employee> employees = scanner.scanEmployees(departments);
@@ -54,8 +46,8 @@ public class Runner {
                     + " average salary is " + AverageDepartmentSalaryCalculator.calculate(department));
                 });
 
-        TransferPrinter printer = new TransferPrinterTxtFilesImpl("C:\\Users\\mmaslov\\IdeaProjects" +
-                "\\t1-t1\\src\\main\\resources\\res_test.txt");
+        TransferPrinter printer = new TransferPrinterTxtFilesImpl(
+                "src\\main\\resources\\res_test.txt");
         List<Transfer> transfers =
                 TransferBetweenDepartmentCalculator.calculate(departments.get(0), departments.get(1));
         printer.printTransfers(transfers);
