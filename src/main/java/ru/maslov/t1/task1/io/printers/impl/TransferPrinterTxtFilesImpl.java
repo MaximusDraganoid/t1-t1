@@ -1,7 +1,7 @@
-package ru.maslov.t1.task1.printers.impl;
+package ru.maslov.t1.task1.io.printers.impl;
 
 import ru.maslov.t1.task1.entities.Transfer;
-import ru.maslov.t1.task1.printers.TransferPrinter;
+import ru.maslov.t1.task1.io.printers.TransferPrinter;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

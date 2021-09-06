@@ -13,8 +13,12 @@ import java.util.List;
  * с целью повышения средней ЗП в отделе
  */
 public class TransferBetweenDepartmentCalculator {
+
     private TransferBetweenDepartmentCalculator() {}
 
+    /**
+     * Вычисление прееводов из одого отдела в другой
+     */
     public static List<Transfer> calculate(Department department1, Department department2) {
         List<Transfer> resultList = new LinkedList<>();
 

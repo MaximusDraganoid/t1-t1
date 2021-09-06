@@ -1,8 +1,8 @@
-package ru.maslov.t1.task1.scanners.impl;
+package ru.maslov.t1.task1.io.scanners.impl;
 
 import ru.maslov.t1.task1.entities.Department;
 import ru.maslov.t1.task1.entities.Employee;
-import ru.maslov.t1.task1.scanners.EmployeeScanner;
+import ru.maslov.t1.task1.io.scanners.EmployeeScanner;
 import ru.maslov.t1.task1.utils.DepartmentUtils;
 
 import java.io.BufferedReader;
