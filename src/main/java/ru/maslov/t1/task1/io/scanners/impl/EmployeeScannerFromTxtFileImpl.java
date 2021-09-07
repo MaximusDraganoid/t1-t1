@@ -2,15 +2,18 @@ package ru.maslov.t1.task1.io.scanners.impl;
 
 import ru.maslov.t1.task1.entities.Department;
 import ru.maslov.t1.task1.entities.Employee;
+import ru.maslov.t1.task1.exceptions.EmployeeValidationException;
 import ru.maslov.t1.task1.io.scanners.EmployeeScanner;
-import ru.maslov.t1.task1.utils.DepartmentUtils;
+import ru.maslov.t1.task1.validators.EmployeeValidator;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
+import java.util.Map;
 
 /**
  * Релизация считывателя сотрудников, основнанная на считывании из файла
@@ -18,44 +21,57 @@ import java.util.List;
 public class EmployeeScannerFromTxtFileImpl
         implements EmployeeScanner {
     /**
-     * Объект - считыватель из файла
+     * Имя файла, из которого считываются данные
      */
-    private String txtFilePath;
+    private final String txtFilePath;
+    /**
+     * Имя файла, в который записываются данные
+     */
+    private final String errorsFilePath;
 
-    public EmployeeScannerFromTxtFileImpl(String txtFilePath) {
+    public EmployeeScannerFromTxtFileImpl(String txtFilePath, String errorsFilePath) {
         this.txtFilePath = txtFilePath;
+        this.errorsFilePath = errorsFilePath;
     }
 
     @Override
-    public List<Employee> scanEmployees(List<Department> departments) {
-        List<Employee> employees = new LinkedList<>();
+    public Map<String, Department> scanEmployees() {
+        Map<String, Department> departments = new HashMap<String, Department>();
+
+        int rowCount = 0;
         try(BufferedReader br =
-                    new BufferedReader(new FileReader(txtFilePath))) {
+                    new BufferedReader(new FileReader(txtFilePath));
+            FileWriter readRecordsWithErrorsOutputFile
+                = new FileWriter(errorsFilePath);
+            ) {
             String employeeInfo;
             while ((employeeInfo = br.readLine()) != null) {
-                employees.add(parseEmployee(employeeInfo, departments));
+                rowCount++;
+                String[] empData = employeeInfo.split(";");
+
+                try {
+                    EmployeeValidator.validateEmployeeData(empData);
+
+                    departments.putIfAbsent(empData[2],
+                            new Department(new LinkedList<>(), empData[2]));
+                    departments.get(empData[2])
+                            .getEmployees()
+                            .add(new Employee(empData[0], new BigDecimal(empData[1])));
+
+                } catch (EmployeeValidationException e) {
+                    readRecordsWithErrorsOutputFile.write("Ошибка при чтении из файла " +
+                            txtFilePath + " в строке №" + rowCount + " : " +
+                            e.getMessage() + ". Содержимое строки: ");
+                    readRecordsWithErrorsOutputFile.write(employeeInfo);
+                    readRecordsWithErrorsOutputFile.write(System.getProperty("line.separator"));
+                }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Возникли проблемы при считывании данных из входного " +
+                    "файла или при записи данных в файл об ошибке считывания", e);
         }
-        return employees;
+        return departments;
     }
 
 
-    /**
-     * Метод для создания нового пользователя на основании записи о нем
-     * @param employeeInfo передается в формате: имя_сотрудника зп название_департамента
-     * @return возвращает созданного сотрудника
-     */
-    private Employee parseEmployee(String employeeInfo, List<Department> departments) {
-        String[] empData = employeeInfo.
-                split(" ");
-        Employee newEmployee = new Employee();
-        newEmployee.setName(empData[0]);
-        newEmployee.setSalary(new BigDecimal(empData[1]));
-        Department department = DepartmentUtils.findDepartmentByName(departments, empData[2]);
-        newEmployee.setDepartment(department);
-        DepartmentUtils.addEmployeeToDepartment(newEmployee, department);
-        return newEmployee;
-    }
 }

@@ -16,18 +16,12 @@ public class Employee {
      */
     private BigDecimal salary;
 
-    /**
-     * Департамент, в котором работает струдник
-     */
-    private Department department;
-
     public Employee() {
     }
 
-    public Employee(String name, BigDecimal salary, Department department) {
+    public Employee(String name, BigDecimal salary) {
         this.name = name;
         this.salary = salary;
-        this.department = department;
     }
 
     public String getName() {
@@ -36,14 +30,6 @@ public class Employee {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Department getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(Department department) {
-        this.department = department;
     }
 
     public BigDecimal getSalary() {
@@ -59,7 +45,6 @@ public class Employee {
         return "Employee{" +
                 "name='" + name + '\'' +
                 ", salary=" + salary +
-                ", department=" + department.getName() +
                 '}';
     }
 }

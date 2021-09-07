@@ -1,0 +1,11 @@
+C:\Users\mmaslov\IdeaProjects\t1-t1\src\main\java\ru\maslov\t1\task1\runners\Runner.java
+C:\Users\mmaslov\IdeaProjects\t1-t1\src\main\java\ru\maslov\t1\task1\calculators\TransferBetweenDepartmentCalculator.java
+C:\Users\mmaslov\IdeaProjects\t1-t1\src\main\java\ru\maslov\t1\task1\utils\DepartmentUtils.java
+C:\Users\mmaslov\IdeaProjects\t1-t1\src\main\java\ru\maslov\t1\task1\entities\Transfer.java
+C:\Users\mmaslov\IdeaProjects\t1-t1\src\main\java\ru\maslov\t1\task1\io\scanners\EmployeeScanner.java
+C:\Users\mmaslov\IdeaProjects\t1-t1\src\main\java\ru\maslov\t1\task1\entities\Employee.java
+C:\Users\mmaslov\IdeaProjects\t1-t1\src\main\java\ru\maslov\t1\task1\io\printers\impl\TransferPrinterTxtFilesImpl.java
+C:\Users\mmaslov\IdeaProjects\t1-t1\src\main\java\ru\maslov\t1\task1\io\scanners\impl\EmployeeScannerFromTxtFileImpl.java
+C:\Users\mmaslov\IdeaProjects\t1-t1\src\main\java\ru\maslov\t1\task1\entities\Department.java
+C:\Users\mmaslov\IdeaProjects\t1-t1\src\main\java\ru\maslov\t1\task1\calculators\AverageDepartmentSalaryCalculator.java
+C:\Users\mmaslov\IdeaProjects\t1-t1\src\main\java\ru\maslov\t1\task1\io\printers\TransferPrinter.java

@@ -39,7 +39,6 @@ public class TransferPrinterTxtFilesImpl
      */
     private void writeEmployeeToFile(Transfer transfer, BufferedWriter bufferedWriter) throws IOException {
         bufferedWriter.write(transfer.getEmployee().getName() + " from "
-                + transfer.getEmployee().getDepartment().getName() + " to "
                 + transfer.getTargetDepartment().getName());
         bufferedWriter.newLine();
     }

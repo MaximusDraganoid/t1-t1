@@ -1,5 +1,6 @@
 package ru.maslov.t1.task1.entities;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -17,6 +18,7 @@ public class Department {
     private String name;
 
     public Department() {
+        employees = new LinkedList<>();
     }
 
     public Department(List<Employee> employees, String name) {

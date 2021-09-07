@@ -4,6 +4,7 @@ import ru.maslov.t1.task1.entities.Department;
 import ru.maslov.t1.task1.entities.Employee;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Интерфейс, предназначенный для считывания информации о
@@ -12,8 +13,7 @@ import java.util.List;
 public interface EmployeeScanner {
     /**
      * Метод для считывания сотруднков из файла
-     * @param departments - список департаментов
-     * @return список сотрудников
+     * @return мапа с департаментами
      */
-    List<Employee> scanEmployees(List<Department> departments);
+    Map<String, Department> scanEmployees();
 }
