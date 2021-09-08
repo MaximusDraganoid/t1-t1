@@ -9,6 +9,8 @@ import java.math.BigDecimal;
  * Класс - валидатор входных данных о сотруднике
  */
 public class EmployeeValidator {
+
+    private EmployeeValidator() {}
     /**
      * Метод проверяет входящие данные о сотруднике, а так же подготавливает данные
      * для дальнейшей работы (удаляет лишние пробелы и т.п.)
@@ -22,14 +24,14 @@ public class EmployeeValidator {
         }
 
         if (checkNameToBlankOrUnacceptableSymbols(empData[0])) {
-            throw new EmployeeValidationException("В имени есть недопустимый или строка пустая");
+            throw new EmployeeValidationException("В имени есть недопустимый символ или строка пустая");
         }
 
         if (checkNumberToBlankOrUnacceptableSymbols(empData[1])) {
-            throw new EmployeeValidationException("В значении ЗП есть недопустимый или строка пустая");
+            throw new EmployeeValidationException("В значении ЗП есть недопустимый символ или строка пустая");
         }
 
-        if (checkNameToBlankOrUnacceptableSymbols(empData[2])) {
+        if (checkDepartmentNameToBlankOrUnacceptableSymbols(empData[2])) {
             throw new EmployeeValidationException("В названии департамента есть недопустимый символ" +
                     " или строка пустая");
         }
@@ -42,15 +44,14 @@ public class EmployeeValidator {
                     "корректно", e);
         }
 
-        if (salary.compareTo(new BigDecimal(0)) < 0) {
-            throw new EmployeeValidationException("Допущена ошибка в указании ЗП: указанная ЗП " +
-                    "меньше 0");
-        }
-
         if (salary.scale() > 2) {
             throw new EmployeeValidationException("Допущена ошибка в указании ЗП: указанная ЗП " +
                     "неверное значение в копейках");
         }
+    }
+
+    private static boolean checkDepartmentNameToBlankOrUnacceptableSymbols(String str) {
+        return StringUtils.isBlank(str) || DepartmentNameValidator.check(str);
     }
 
     private static boolean checkNameToBlankOrUnacceptableSymbols(String str) {

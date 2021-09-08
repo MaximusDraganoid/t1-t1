@@ -41,6 +41,22 @@ public class Employee {
     }
 
     @Override
+    public boolean equals(Object object) {
+
+        if (object == this) {
+            return true;
+        }
+
+        if (object == null || object.getClass() != this.getClass()) {
+            return false;
+        }
+
+        Employee employee = (Employee) object;
+
+        return employee.getName().equals(name) && employee.getSalary().compareTo(salary) == 0;
+    }
+
+    @Override
     public String toString() {
         return "Employee{" +
                 "name='" + name + '\'' +

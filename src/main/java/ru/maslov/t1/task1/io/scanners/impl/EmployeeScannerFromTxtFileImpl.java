@@ -6,10 +6,7 @@ import ru.maslov.t1.task1.exceptions.EmployeeValidationException;
 import ru.maslov.t1.task1.io.scanners.EmployeeScanner;
 import ru.maslov.t1.task1.validators.EmployeeValidator;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -41,8 +38,8 @@ public class EmployeeScannerFromTxtFileImpl
         int rowCount = 0;
         try(BufferedReader br =
                     new BufferedReader(new FileReader(txtFilePath));
-            FileWriter readRecordsWithErrorsOutputFile
-                = new FileWriter(errorsFilePath);
+            BufferedWriter readRecordsWithErrorsOutputFile
+                = new BufferedWriter(new FileWriter(errorsFilePath));
             ) {
             String employeeInfo;
             while ((employeeInfo = br.readLine()) != null) {
@@ -68,7 +65,8 @@ public class EmployeeScannerFromTxtFileImpl
             }
         } catch (IOException e) {
             throw new RuntimeException("Возникли проблемы при считывании данных из входного " +
-                    "файла или при записи данных в файл об ошибке считывания", e);
+                    "файла или при записи данных в файл об ошибке считывания. Убедитесь, что " +
+                    "переданы корректные файлы", e);
         }
         return departments;
     }

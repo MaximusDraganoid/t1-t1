@@ -31,28 +31,33 @@ public class TransferBetweenDepartmentCalculator {
     private static List<Transfer> calculateTransfersFromSrcDepartmentToDst(Department dst,
                                                                            Department src) {
         List<Transfer> resultList = new LinkedList<>();
-        BigDecimal averageSalaryInDep1 = AverageDepartmentSalaryCalculator.calculate(dst);
-        BigDecimal averageSalaryInDep2 = AverageDepartmentSalaryCalculator.calculate(src);
 
-        List<Employee> srsList = new LinkedList<>(src.getEmployees());
+        BigDecimal dstAverageSalary = AverageDepartmentSalaryCalculator.calculate(dst);
+        BigDecimal srcAverageSalary = AverageDepartmentSalaryCalculator.calculate(src);
 
-        for(Employee employee : srsList) {
-            dst.getEmployees().add(employee);
-            src.getEmployees().remove(employee);
+        BigDecimal summarySrcSalary = AverageDepartmentSalaryCalculator.calculateSalariesSum(src);
+        BigDecimal summaryDstSalary = AverageDepartmentSalaryCalculator.calculateSalariesSum(dst);
 
-            if (src.getEmployees().size() != 0) {
-                BigDecimal newAverageSalaryInDep1 =
-                        AverageDepartmentSalaryCalculator.calculate(dst);
-                BigDecimal newAverageSalaryInDep2
-                        = AverageDepartmentSalaryCalculator.calculate(src);
+        for(Employee employee : src.getEmployees()) {
+            if (employee.getSalary().compareTo(dstAverageSalary) > 0
+                && employee.getSalary().compareTo(srcAverageSalary) < 0) {
 
-                if (newAverageSalaryInDep1.compareTo(averageSalaryInDep1) > 0
-                        && newAverageSalaryInDep2.compareTo(averageSalaryInDep2) > 0) {
-                    resultList.add(new Transfer(employee, dst));
-                }
+                BigDecimal newAverageSalaryInDst =
+                        AverageDepartmentSalaryCalculator.calculateWithEmployee(dst.getEmployees().size(),
+                                employee, summaryDstSalary);
+
+                BigDecimal newAverageSalaryInSrc
+                        = AverageDepartmentSalaryCalculator.calculateWithoutEmployee(src.getEmployees().size(),
+                                employee, summarySrcSalary);
+
+                resultList.add(new Transfer(employee,
+                        src,
+                        dst,
+                        srcAverageSalary,
+                        newAverageSalaryInSrc,
+                        dstAverageSalary,
+                        newAverageSalaryInDst));
             }
-            dst.getEmployees().remove(employee);
-            src.getEmployees().add(employee);
         }
 
         return resultList;
