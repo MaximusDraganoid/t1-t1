@@ -32,22 +32,26 @@ public class TransferBetweenDepartmentCalculator {
      */
     public void calculate(Department department1, Department department2) throws IOException{
         calculateTransfersFromSrcDepartmentToDst(department1, department2);
-        calculateTransfersFromSrcDepartmentToDst(department2, department1);
     }
 
     private void calculateTransfersFromSrcDepartmentToDst(Department dst, Department src) throws IOException {
-        BigDecimal dstAverageSalary = AverageDepartmentSalaryCalculator.calculate(dst);
-        BigDecimal srcAverageSalary = AverageDepartmentSalaryCalculator.calculate(src);
+        dstDepartmentAverageSalary = AverageDepartmentSalaryCalculator.calculate(dst);
+        srcDepartmentAverageSalary = AverageDepartmentSalaryCalculator.calculate(src);
 
         for(Employee employee : src.getEmployees()) {
-            if (employee.getSalary().compareTo(dstAverageSalary) > 0
-                && employee.getSalary().compareTo(srcAverageSalary) < 0) {
+            if (employee.getSalary().compareTo(dstDepartmentAverageSalary) > 0
+                && employee.getSalary().compareTo(srcDepartmentAverageSalary) < 0) {
 
                 transferPrinter.printTransfer(new Transfer(employee, src, dst));
             }
         }
     }
 
+    /**
+     * Вычисление групповых переводов между отделами
+     * @param src отдел из которого переводятся
+     * @param dst отдел в который переводятся
+     */
     public void calculateGroupTransfersBetweenDepartments (Department src, Department dst) {
         List<Employee> employees = new LinkedList<>();
         srcDepartmentAverageSalary = AverageDepartmentSalaryCalculator.calculate(src);

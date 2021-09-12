@@ -33,11 +33,11 @@ public class Runner {
 
         fileValidation(args);
 
-        try {
-            prepareOutputFile(args[2]);
-        } catch (IOException e) {
-            throw new RuntimeException("Возникла ошибка при очистке выходного файла", e);
-        }
+//        try {
+//            prepareOutputFile(args[2]);
+//        } catch (IOException e) {
+//            throw new RuntimeException("Возникла ошибка при очистке выходного файла", e);
+//        }
 
         EmployeeScanner scanner =
                 new EmployeeScannerFromTxtFileImpl(args[0], args[1]);

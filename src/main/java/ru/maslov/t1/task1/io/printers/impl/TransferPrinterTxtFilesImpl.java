@@ -20,8 +20,6 @@ public class TransferPrinterTxtFilesImpl
             "%-20.18s в отлел %-20.18s изменение ЗП в старом отделе: с %9.2f на %9.2f" +
             " изменение ЗП в новом отделе: с %9.2f на %9.2f" + System.getProperty("line.separator");
 
-    private static final String outputGroupTransferPattern = "Групповой перевод сотрудников: ";
-
     public TransferPrinterTxtFilesImpl(Formatter formatter) {
         this.formatter = formatter;
     }
