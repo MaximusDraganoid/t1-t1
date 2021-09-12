@@ -1,6 +1,5 @@
 package ru.maslov.t1.task1.validators;
 
-import org.apache.commons.lang3.StringUtils;
 import ru.maslov.t1.task1.exceptions.EmployeeValidationException;
 
 import java.math.BigDecimal;
@@ -19,8 +18,19 @@ public class EmployeeValidator {
      */
     public static void validateEmployeeData(String[] empData)
             throws EmployeeValidationException {
+
         if (empData.length != 3) {
             throw new EmployeeValidationException("В строке находится более или менее 3 колонок");
+        }
+
+        if (empData[0] == null
+        || empData[1] == null
+        || empData[2] == null) {
+            throw new EmployeeValidationException("Одна из переданных строк в массиве является null");
+        }
+
+        for (int i = 0; i < empData.length; i++) {
+            empData[i] = empData[i].trim();
         }
 
         if (checkNameToBlankOrUnacceptableSymbols(empData[0])) {
@@ -51,14 +61,14 @@ public class EmployeeValidator {
     }
 
     private static boolean checkDepartmentNameToBlankOrUnacceptableSymbols(String str) {
-        return StringUtils.isBlank(str) || DepartmentNameValidator.check(str);
+        return str == null || str.length() == 0 || DepartmentNameValidator.check(str);
     }
 
     private static boolean checkNameToBlankOrUnacceptableSymbols(String str) {
-        return StringUtils.isBlank(str) || NameValidator.check(str);
+        return str == null || str.length() == 0 || NameValidator.check(str);
     }
 
     private static boolean checkNumberToBlankOrUnacceptableSymbols(String str) {
-        return StringUtils.isBlank(str) || NumberValidator.check(str);
+        return str == null || str.length() == 0 || NumberValidator.check(str);
     }
 }

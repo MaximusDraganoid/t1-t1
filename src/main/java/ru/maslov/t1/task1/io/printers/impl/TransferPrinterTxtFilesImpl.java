@@ -1,5 +1,6 @@
 package ru.maslov.t1.task1.io.printers.impl;
 
+import ru.maslov.t1.task1.calculators.AverageDepartmentSalaryCalculator;
 import ru.maslov.t1.task1.entities.Transfer;
 import ru.maslov.t1.task1.io.printers.TransferPrinter;
 
@@ -17,43 +18,27 @@ import java.util.List;
 public class TransferPrinterTxtFilesImpl
         implements TransferPrinter {
 
-    private String txtFilePath;
+    private Formatter formatter;
 
     private static final String outputPattern = "Перевод сотрудника %-30.25s из отдела " +
             "%-20.18s в отлел %-20.18s изменение ЗП в старом отделе: с %9.2f на %9.2f" +
-            "изменение ЗП в новом отделе: с %9.2f на %9.2f" + System.getProperty("line.separator");
+            " изменение ЗП в новом отделе: с %9.2f на %9.2f" + System.getProperty("line.separator");
 
-    public TransferPrinterTxtFilesImpl(String txtFilePath) {
-        this.txtFilePath = txtFilePath;
-        File file = new File(txtFilePath);
+    public TransferPrinterTxtFilesImpl(Formatter formatter) {
+        this.formatter = formatter;
     }
 
     @Override
-    public void printTransfers(List<Transfer> transfers) {
-        try (Formatter formatter
-                     = new Formatter(new BufferedWriter(new FileWriter(txtFilePath, true)))) {
-            for (Transfer transfer : transfers) {
-                writeEmployeeToFile(transfer, formatter);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Метод для записи информации об 1 сотруднике в файл
-     * @param transfer - совершаемый трансфер
-     * @param formatter - поток, в который пишем
-     * @throws IOException
-     */
-    private void writeEmployeeToFile(Transfer transfer, Formatter formatter) throws IOException {
+    public void printTransfer(Transfer transfer) {
         formatter.format(outputPattern,
                 transfer.getEmployee().getName(),
                 transfer.getSrcDepartment().getName(),
                 transfer.getTargetDepartment().getName(),
-                transfer.getSrcPrevAverageSalary(),
-                transfer.getSrcNewAverageSalary(),
-                transfer.getTargetPrevAverageSalary(),
-                transfer.getTargetNewAverageSalary());
+                AverageDepartmentSalaryCalculator.calculate(transfer.getSrcDepartment()),
+                AverageDepartmentSalaryCalculator
+                        .calculateWithoutEmployee(transfer.getSrcDepartment(), transfer.getEmployee()),
+                AverageDepartmentSalaryCalculator.calculate(transfer.getTargetDepartment()),
+                AverageDepartmentSalaryCalculator
+                        .calculateWithEmployee(transfer.getTargetDepartment(), transfer.getEmployee()));
     }
 }

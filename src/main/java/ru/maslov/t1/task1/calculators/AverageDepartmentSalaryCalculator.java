@@ -13,6 +13,11 @@ import java.util.List;
 public class AverageDepartmentSalaryCalculator {
     private AverageDepartmentSalaryCalculator(){}
 
+    /**
+     * Рассчет суммарной ЗП департамента
+     * @param department - целевой департамент
+     * @return
+     */
     public static BigDecimal calculateSalariesSum(Department department) {
         BigDecimal summarySalary = new BigDecimal(0);
         List<Employee> employees = department.getEmployees();
@@ -22,6 +27,11 @@ public class AverageDepartmentSalaryCalculator {
         return summarySalary;
     }
 
+    /**
+     * Рассчет средней ЗП департамент
+     * @param department
+     * @return
+     */
     public static BigDecimal calculate(Department department) {
         BigDecimal averageSalary = calculateSalariesSum(department);
 
@@ -30,24 +40,12 @@ public class AverageDepartmentSalaryCalculator {
                 RoundingMode.HALF_UP);
     }
 
-    public static BigDecimal calculateWithEmployee(int numOfEmployeesInDepartment,
-                                                   Employee employee,
-                                                   BigDecimal summarySalary) {
-        summarySalary = summarySalary.add(employee.getSalary());
-        return summarySalary.divide(new BigDecimal(numOfEmployeesInDepartment + 1),
-                2,
-                RoundingMode.HALF_UP);
-    }
-
-    public static BigDecimal calculateWithoutEmployee(int numOfEmployeesInDepartment,
-                                                   Employee employee,
-                                                   BigDecimal summarySalary) {
-        summarySalary = summarySalary.subtract(employee.getSalary());
-        return summarySalary.divide(new BigDecimal(numOfEmployeesInDepartment - 1),
-                2,
-                RoundingMode.HALF_UP);
-    }
-
+    /**
+     * Рассчет средней зп департамента с учетом
+     * @param department - департамент для которого производится рассчет
+     * @param employee - сотрудник с учетом которого провоится расчет
+     * @return
+     */
     public static BigDecimal calculateWithEmployee(Department department, Employee employee){
         BigDecimal averageSalary = calculateSalariesSum(department);
         averageSalary = averageSalary.add(employee.getSalary());
@@ -56,6 +54,12 @@ public class AverageDepartmentSalaryCalculator {
                 RoundingMode.HALF_UP);
     }
 
+    /**
+     *
+     * @param department - департамент для которого проиизводится расчет
+     * @param employee - сотлрудник без которого проводится расчет
+     * @return
+     */
     public static BigDecimal calculateWithoutEmployee(Department department, Employee employee) {
         BigDecimal averageSalary = new BigDecimal(0);
         List<Employee> employees = department.getEmployees();

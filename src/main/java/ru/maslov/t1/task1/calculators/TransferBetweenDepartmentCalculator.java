@@ -3,7 +3,9 @@ package ru.maslov.t1.task1.calculators;
 import ru.maslov.t1.task1.entities.Department;
 import ru.maslov.t1.task1.entities.Employee;
 import ru.maslov.t1.task1.entities.Transfer;
+import ru.maslov.t1.task1.io.printers.TransferPrinter;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,53 +16,31 @@ import java.util.List;
  */
 public class TransferBetweenDepartmentCalculator {
 
-    private TransferBetweenDepartmentCalculator() {}
+    private TransferPrinter transferPrinter;
+
+    public TransferBetweenDepartmentCalculator(TransferPrinter transferPrinter) {
+        this.transferPrinter = transferPrinter;
+    }
 
     /**
      * Вычисление прееводов из одого отдела в другой
      */
-    public static List<Transfer> calculate(Department department1, Department department2) {
-        List<Transfer> resultList = new LinkedList<>();
-
-        resultList.addAll(calculateTransfersFromSrcDepartmentToDst(department1, department2));
-        resultList.addAll(calculateTransfersFromSrcDepartmentToDst(department2, department1));
-
-        return resultList;
+    public void calculate(Department department1, Department department2) throws IOException{
+        calculateTransfersFromSrcDepartmentToDst(department1, department2);
+        calculateTransfersFromSrcDepartmentToDst(department2, department1);
     }
 
-    private static List<Transfer> calculateTransfersFromSrcDepartmentToDst(Department dst,
-                                                                           Department src) {
-        List<Transfer> resultList = new LinkedList<>();
-
+    private void calculateTransfersFromSrcDepartmentToDst(Department dst, Department src) throws IOException {
         BigDecimal dstAverageSalary = AverageDepartmentSalaryCalculator.calculate(dst);
         BigDecimal srcAverageSalary = AverageDepartmentSalaryCalculator.calculate(src);
-
-        BigDecimal summarySrcSalary = AverageDepartmentSalaryCalculator.calculateSalariesSum(src);
-        BigDecimal summaryDstSalary = AverageDepartmentSalaryCalculator.calculateSalariesSum(dst);
 
         for(Employee employee : src.getEmployees()) {
             if (employee.getSalary().compareTo(dstAverageSalary) > 0
                 && employee.getSalary().compareTo(srcAverageSalary) < 0) {
 
-                BigDecimal newAverageSalaryInDst =
-                        AverageDepartmentSalaryCalculator.calculateWithEmployee(dst.getEmployees().size(),
-                                employee, summaryDstSalary);
-
-                BigDecimal newAverageSalaryInSrc
-                        = AverageDepartmentSalaryCalculator.calculateWithoutEmployee(src.getEmployees().size(),
-                                employee, summarySrcSalary);
-
-                resultList.add(new Transfer(employee,
-                        src,
-                        dst,
-                        srcAverageSalary,
-                        newAverageSalaryInSrc,
-                        dstAverageSalary,
-                        newAverageSalaryInDst));
+                transferPrinter.printTransfer(new Transfer(employee, src, dst));
             }
         }
-
-        return resultList;
     }
 
 }

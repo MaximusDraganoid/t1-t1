@@ -9,10 +9,8 @@ import ru.maslov.t1.task1.io.printers.impl.TransferPrinterTxtFilesImpl;
 import ru.maslov.t1.task1.io.scanners.EmployeeScanner;
 import ru.maslov.t1.task1.io.scanners.impl.EmployeeScannerFromTxtFileImpl;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.util.Formatter;
 import java.util.Map;
 
 public class Runner {
@@ -63,20 +61,29 @@ public class Runner {
         printStarsLine();
         System.out.println();
 
-        TransferPrinter transferPrinter
-                = new TransferPrinterTxtFilesImpl(args[2]);
-
         System.out.println();
         System.out.println("Начинаем вычисления переводов между департаменами");
+        try (Formatter formatter =
+                     new Formatter(new BufferedWriter(new FileWriter(args[2])))) {
 
-        for (String srcDepName : departmentMap.keySet()) {
-            for (String dstDepName : departmentMap.keySet()) {
-                if (!dstDepName.equals(srcDepName)) {
-                    transferPrinter.printTransfers(TransferBetweenDepartmentCalculator
-                            .calculate(departmentMap.get(srcDepName), departmentMap.get(dstDepName)));
+            TransferPrinter transferPrinter
+                    = new TransferPrinterTxtFilesImpl(formatter);
+
+            TransferBetweenDepartmentCalculator transferCalculator =
+                    new TransferBetweenDepartmentCalculator(transferPrinter);
+
+            for (String srcDepName : departmentMap.keySet()) {
+                for (String dstDepName : departmentMap.keySet()) {
+                    if (!dstDepName.equals(srcDepName)) {
+                        transferCalculator
+                                .calculate(departmentMap.get(srcDepName), departmentMap.get(dstDepName));
+                    }
                 }
             }
+        } catch (IOException e) {
+            throw new RuntimeException("Возникли проблемы с записью результатов в файл", e);
         }
+
         printStarsLine();
         System.out.println("Вычисления окончены! реузльтат записан в " + args[2]);
     }
@@ -101,20 +108,25 @@ public class Runner {
         }
 
         File errorsFile = new File(args[1]);
-        if (!errorsFile.exists()) {
-            throw new RuntimeException("Указанного файла для вывода ошибок не существует!");
+        try {
+            if (!errorsFile.exists()) {
+                errorsFile.createNewFile();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Возникли приблемы при создани файла для записи ошибок", e);
         }
-
         if (!errorsFile.isFile()) {
             throw new RuntimeException("Указанный файл для вывода ошибок не является файлом!");
         }
 
         File outputFile = new File(args[2]);
-        if (!outputFile.exists()) {
-            throw new RuntimeException("Указанного файла для вывода результатов работы программы " +
-                    "не существует!");
+        try {
+            if (!outputFile.exists()) {
+                outputFile.createNewFile();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Возникли приблемы при создани файла для записи результата", e);
         }
-
         if (!inputFile.isFile()) {
             throw new RuntimeException("Указанный файл для вывода результатов работы программы" +
                     " не является файлом!");
