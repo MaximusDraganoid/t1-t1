@@ -61,10 +61,46 @@ public class Runner {
         printStarsLine();
         System.out.println();
 
+//        System.out.println();
+//        System.out.println("Начинаем вычисления переводов между департаменами");
+//        calculateSingleTransfers(departmentMap, args[2]);
+//        printStarsLine();
+
         System.out.println();
-        System.out.println("Начинаем вычисления переводов между департаменами");
+        System.out.println("Начинаем вычисления групповых переводов между департаменами");
+        calculateGroupTransfers(departmentMap, args[2]);
+        printStarsLine();
+        System.out.println("Вычисления окончены! реузльтат записан в " + args[2]);
+    }
+
+    private static void calculateGroupTransfers(Map<String, Department> departmentMap,
+                                                 String resultFilPath) {
         try (Formatter formatter =
-                     new Formatter(new BufferedWriter(new FileWriter(args[2])))) {
+                     new Formatter(resultFilPath)) {
+
+            TransferPrinter transferPrinter
+                    = new TransferPrinterTxtFilesImpl(formatter);
+
+            TransferBetweenDepartmentCalculator transferCalculator =
+                    new TransferBetweenDepartmentCalculator(transferPrinter);
+
+            for (String srcDepName : departmentMap.keySet()) {
+                for (String dstDepName : departmentMap.keySet()) {
+                    if (!dstDepName.equals(srcDepName)) {
+                        transferCalculator
+                                .calculateGroupTransfersBetweenDepartments(departmentMap.get(srcDepName), departmentMap.get(dstDepName));
+                    }
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Возникли проблемы с записью результатов в файл", e);
+        }
+    }
+
+    private static void calculateSingleTransfers(Map<String, Department> departmentMap,
+                                                 String resultFilPath) {
+        try (Formatter formatter =
+                     new Formatter(new BufferedWriter(new FileWriter(resultFilPath)))) {
 
             TransferPrinter transferPrinter
                     = new TransferPrinterTxtFilesImpl(formatter);
@@ -83,9 +119,6 @@ public class Runner {
         } catch (IOException e) {
             throw new RuntimeException("Возникли проблемы с записью результатов в файл", e);
         }
-
-        printStarsLine();
-        System.out.println("Вычисления окончены! реузльтат записан в " + args[2]);
     }
 
     private static void fileValidation(String[] args) {
