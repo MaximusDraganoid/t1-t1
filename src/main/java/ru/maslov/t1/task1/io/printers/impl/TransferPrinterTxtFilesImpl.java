@@ -50,11 +50,11 @@ public class TransferPrinterTxtFilesImpl
             formatter.format("Сотрудник: %-30.25s" + System.getProperty("line.separator"), employee.getName()
             );
         }
-        formatter.format("изменения средней ЗП в старом отделе с с %9.2f на %9.2f" + System.getProperty("line.separator"),
+        formatter.format("изменения средней ЗП в старом отделе с %9.2f на %9.2f" + System.getProperty("line.separator"),
                 AverageDepartmentSalaryCalculator.calculate(transfer.getSrc()),
                 AverageDepartmentSalaryCalculator
                         .calculateWithoutEmployees(transfer.getSrc(), transfer.getEmployees()));
-        formatter.format("изменения средней ЗП в новом отделе с с %9.2f на %9.2f" + System.getProperty("line.separator"),
+        formatter.format("изменения средней ЗП в новом отделе с %9.2f на %9.2f" + System.getProperty("line.separator"),
                 AverageDepartmentSalaryCalculator.calculate(transfer.getDst()),
                 AverageDepartmentSalaryCalculator
                         .calculateWithEmployees(transfer.getDst(), transfer.getEmployees()));

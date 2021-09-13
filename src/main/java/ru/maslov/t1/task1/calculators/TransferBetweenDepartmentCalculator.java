@@ -56,6 +56,19 @@ public class TransferBetweenDepartmentCalculator {
         List<Employee> employees = new LinkedList<>();
         srcDepartmentAverageSalary = AverageDepartmentSalaryCalculator.calculate(src);
         dstDepartmentAverageSalary = AverageDepartmentSalaryCalculator.calculate(dst);
+
+        //проверяем случай, когда в отделе нет подходящих для перевода сотрудников
+        boolean exitFlag = true;
+        for(Employee employee : src.getEmployees()) {
+            if (employee.getSalary().compareTo(srcDepartmentAverageSalary) < 0) {
+               exitFlag = false;
+            }
+        }
+
+        if (exitFlag) {
+            return;
+        }
+
         recursionCalculating(src, dst, employees, 0, src.getEmployees().size());
     }
 
